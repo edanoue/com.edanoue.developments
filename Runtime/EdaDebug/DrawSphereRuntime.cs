@@ -17,9 +17,9 @@ namespace Edanoue
         {
             if (CheckDrawer())
             {
-                DrawCircle(0, center, Quaternion.identity, radius, DefaultColor, duration);
-                DrawCircle(1, center, Quaternion.identity, radius, DefaultColor, duration);
-                DrawCircle(2, center, Quaternion.identity, radius, DefaultColor, duration);
+                DrawCircle(0, center, Quaternion.identity, radius, _defaultColor, duration);
+                DrawCircle(1, center, Quaternion.identity, radius, _defaultColor, duration);
+                DrawCircle(2, center, Quaternion.identity, radius, _defaultColor, duration);
             }
         }
 
@@ -34,9 +34,9 @@ namespace Edanoue
         {
             if (CheckDrawer())
             {
-                DrawCircle(0, center, rotation, radius, DefaultColor, duration);
-                DrawCircle(1, center, rotation, radius, DefaultColor, duration);
-                DrawCircle(2, center, rotation, radius, DefaultColor, duration);
+                DrawCircle(0, center, rotation, radius, _defaultColor, duration);
+                DrawCircle(1, center, rotation, radius, _defaultColor, duration);
+                DrawCircle(2, center, rotation, radius, _defaultColor, duration);
             }
         }
 

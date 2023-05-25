@@ -3,6 +3,7 @@
 #nullable enable
 using System;
 using System.Runtime.CompilerServices;
+using Edanoue.Developments.Internal;
 using UnityEngine;
 using Object = UnityEngine.Object;
 

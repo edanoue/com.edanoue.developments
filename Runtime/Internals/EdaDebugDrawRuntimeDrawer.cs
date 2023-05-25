@@ -6,7 +6,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Rendering;
 
-namespace Edanoue
+namespace Edanoue.Developments.Internal
 {
     [DisallowMultipleComponent]
     internal sealed class EdaDebugDrawRuntimeDrawer : MonoBehaviour

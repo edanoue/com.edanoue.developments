@@ -17,7 +17,7 @@ namespace Edanoue
         {
             if (CheckDrawer())
             {
-                _drawer!.RegisterLine(start, start + dir, DefaultColor, 0.0f);
+                _drawer!.RegisterLine(start, start + dir, _defaultColor, 0.0f);
             }
         }
 

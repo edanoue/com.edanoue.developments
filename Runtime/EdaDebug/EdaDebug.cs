@@ -1,6 +1,7 @@
 // Copyright Edanoue, Inc. All Rights Reserved.
 
 #nullable enable
+using Edanoue.Developments.Internal;
 using UnityEngine;
 
 namespace Edanoue
@@ -10,7 +11,7 @@ namespace Edanoue
     public static partial class EdaDebug
     {
         private static          EdaDebugDrawRuntimeDrawer? _drawer;
-        private static readonly Color                      DefaultColor = Color.white;
+        private static readonly Color                      _defaultColor = Color.white;
 
         private static bool CheckDrawer()
         {

@@ -7,7 +7,7 @@ using System.Text;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace Edanoue
+namespace Edanoue.Developments.Internal
 {
     [DisallowMultipleComponent]
     internal sealed class EdaDebugConsoleRuntimeDrawer : MonoBehaviour

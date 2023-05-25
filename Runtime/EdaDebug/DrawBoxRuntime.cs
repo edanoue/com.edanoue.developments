@@ -18,7 +18,7 @@ namespace Edanoue
         {
             if (CheckDrawer())
             {
-                DrawCubeInternal(center, Quaternion.identity, size, DefaultColor, duration);
+                DrawCubeInternal(center, Quaternion.identity, size, _defaultColor, duration);
             }
         }
 
@@ -32,7 +32,7 @@ namespace Edanoue
         {
             if (CheckDrawer())
             {
-                DrawBoxInternal(center, Quaternion.identity, size, DefaultColor, duration);
+                DrawBoxInternal(center, Quaternion.identity, size, _defaultColor, duration);
             }
         }
 
@@ -47,7 +47,7 @@ namespace Edanoue
         {
             if (CheckDrawer())
             {
-                DrawCubeInternal(center, rotation, size, DefaultColor, duration);
+                DrawCubeInternal(center, rotation, size, _defaultColor, duration);
             }
         }
 
@@ -63,7 +63,7 @@ namespace Edanoue
         {
             if (CheckDrawer())
             {
-                DrawBoxInternal(center, rotation, size, DefaultColor, duration);
+                DrawBoxInternal(center, rotation, size, _defaultColor, duration);
             }
         }
 
