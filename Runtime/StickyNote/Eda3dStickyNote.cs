@@ -6,6 +6,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Rendering;
 
+// OnValidate でしか使用しない Unity の Field がビルド時に警告出すので抑制
+#pragma warning disable CS0414
+
 namespace Edanoue.Developments
 {
     [DisallowMultipleComponent]
