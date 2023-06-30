@@ -70,6 +70,14 @@ namespace Edanoue.Developments
             _drawer.Dispose();
         }
 
+        public void SetWireframeColor(in Color color)
+        {
+            m_color = color;
+            // Rebuild
+            _drawer.Dispose();
+            _drawer = new BatchedBoxDraw(Vector3.zero, m_size, m_color, m_shader);
+        }
+
         private sealed class BatchedBoxDraw : IDisposable
         {
             private readonly List<Color>   _colors   = new();
