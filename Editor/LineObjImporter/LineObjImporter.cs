@@ -1,9 +1,13 @@
+// Copyright Edanoue, Inc. All Rights Reserved.
+
+#nullable enable
 using System;
 using System.Collections.Generic;
 using System.IO;
 using UnityEditor.AssetImporters;
 using UnityEngine;
 
+// ReSharper disable CommentTypo
 // ReSharper disable StringLiteralTypo
 
 namespace Edanoue.Editor
@@ -23,7 +27,7 @@ namespace Edanoue.Editor
             var mainAsset = new GameObject();
 
             var obj = ParseObj(ctx.assetPath);
-            var mesh = ConstructMesh(obj, out var triangleSubmeshExists);
+            var mesh = ConstructMesh(obj, out var triangleSubMeshExists);
             if (mesh == null)
             {
                 return;
@@ -35,10 +39,12 @@ namespace Edanoue.Editor
             var meshFilter = mainAsset.AddComponent<MeshFilter>();
             meshFilter.sharedMesh = mesh;
             ctx.AddObjectToAsset("Mesh", mesh);
+
+            // Material を生成する場合は 下記のコメントアウトを外す
             /*
             var standard = Shader.Find("Standard");
             Material[] materials = new Material[mesh.subMeshCount];
-            if (triangleSubmeshExists && mesh.subMeshCount == 2)
+            if (triangleSubMeshExists && mesh.subMeshCount == 2)
             {
                 materials[0] = new Material(standard);
                 materials[0].name = "Face Material";
@@ -47,13 +53,13 @@ namespace Edanoue.Editor
                 ctx.AddObjectToAsset("Face Material", materials[0]);
                 ctx.AddObjectToAsset("Edge Material", materials[1]);
             }
-            else if (triangleSubmeshExists && mesh.subMeshCount == 1)
+            else if (triangleSubMeshExists && mesh.subMeshCount == 1)
             {
                 materials[0] = new Material(standard);
                 materials[0].name = "Face Material";
                 ctx.AddObjectToAsset("Face Material", materials[0]);
             }
-            else if (!triangleSubmeshExists && mesh.subMeshCount == 1)
+            else if (!triangleSubMeshExists && mesh.subMeshCount == 1)
             {
                 materials[0] = new Material(standard);
                 materials[0].name = "Edge Material";
@@ -68,12 +74,12 @@ namespace Edanoue.Editor
             ctx.SetMainObject(mainAsset);
         }
 
-        private Mesh ConstructMesh(IReadOnlyDictionary<string, List<string[]>> data, out bool triangleSubmeshExists)
+        private Mesh? ConstructMesh(IReadOnlyDictionary<string, List<string[]>> data, out bool triangleSubMeshExists)
         {
             Mesh result;
             var f = data["f"];
             var e = data["e"];
-            triangleSubmeshExists = false;
+            triangleSubMeshExists = false;
 
             if (f.Count > 0 && e.Count > 0)
             {
@@ -81,7 +87,7 @@ namespace Edanoue.Editor
                 {
                     subMeshCount = 2
                 };
-                triangleSubmeshExists = true;
+                triangleSubMeshExists = true;
             }
             else if (f.Count > 0)
             {
@@ -89,7 +95,7 @@ namespace Edanoue.Editor
                 {
                     subMeshCount = 1
                 };
-                triangleSubmeshExists = true;
+                triangleSubMeshExists = true;
             }
             else if (e.Count > 0)
             {
@@ -167,7 +173,7 @@ namespace Edanoue.Editor
                     edgeIndices[i * 2 + 1] = v2;
                 }
 
-                result.SetIndices(edgeIndices, MeshTopology.Lines, triangleSubmeshExists ? 1 : 0, false);
+                result.SetIndices(edgeIndices, MeshTopology.Lines, triangleSubMeshExists ? 1 : 0, false);
             }
 
             result.RecalculateBounds();
@@ -187,10 +193,10 @@ namespace Edanoue.Editor
             var e = new List<string[]>();
 
             using var sr = File.OpenText(filepath);
-            var s = string.Empty;
-            string[] line;
-            while ((s = sr.ReadLine()) != null)
+            while (sr.Peek() >= 0)
             {
+                var s = sr.ReadLine()!;
+                string[] line;
                 if (s.StartsWith("v "))
                 {
                     line = s.Split(' ');
