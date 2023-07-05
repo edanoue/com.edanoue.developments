@@ -16,20 +16,19 @@ namespace Edanoue.Editor
     /// .lineobj 形式のアセットを Mesh としてインポートする
     /// </summary>
     [ScriptedImporter(1, "lineobj")]
-    public class LineObjImporter : ScriptedImporter
+    public sealed class LineObjImporter : ScriptedImporter
     {
         public override void OnImportAsset(AssetImportContext ctx)
         {
             var lastSlash = ctx.assetPath.LastIndexOf('/');
             var lastDot = ctx.assetPath.LastIndexOf('.');
             var assetName = ctx.assetPath.Substring(lastSlash + 1, lastDot - lastSlash - 1);
-
             var mainAsset = new GameObject();
-
             var obj = ParseObj(ctx.assetPath);
-            var mesh = ConstructMesh(obj, out var triangleSubMeshExists);
-            if (mesh == null)
+
+            if (!ConstructMesh(obj, out var mesh, out var triangleSubMeshExists))
             {
+                Debug.LogWarning("Failed to construct mesh. No face, No edge.");
                 return;
             }
 
@@ -74,7 +73,8 @@ namespace Edanoue.Editor
             ctx.SetMainObject(mainAsset);
         }
 
-        private Mesh? ConstructMesh(IReadOnlyDictionary<string, List<string[]>> data, out bool triangleSubMeshExists)
+        private bool ConstructMesh(IReadOnlyDictionary<string, List<string[]>> data, out Mesh mesh,
+            out bool triangleSubMeshExists)
         {
             Mesh result;
             var f = data["f"];
@@ -106,7 +106,8 @@ namespace Edanoue.Editor
             }
             else
             {
-                return null;
+                mesh = new Mesh();
+                return false;
             }
 
             var v = data["v"];
@@ -177,7 +178,8 @@ namespace Edanoue.Editor
             }
 
             result.RecalculateBounds();
-            return result;
+            mesh = result;
+            return true;
         }
 
         /*
