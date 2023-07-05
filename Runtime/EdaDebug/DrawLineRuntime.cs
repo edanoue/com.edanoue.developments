@@ -21,7 +21,6 @@ namespace Edanoue
             }
         }
 
-
         /// <summary>
         /// <para>Draws a line between specified start and end points in editor and runtime</para>
         /// </summary>

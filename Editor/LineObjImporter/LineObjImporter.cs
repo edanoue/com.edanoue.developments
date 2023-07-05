@@ -9,6 +9,7 @@ using UnityEngine;
 
 // ReSharper disable CommentTypo
 // ReSharper disable StringLiteralTypo
+// ReSharper disable CheckNamespace
 
 namespace Edanoue.Editor
 {
@@ -32,7 +33,7 @@ namespace Edanoue.Editor
                 return;
             }
 
-            mesh.name = assetName;
+            mesh!.name = assetName;
 
             // Add Mesh Filter
             var meshFilter = mainAsset.AddComponent<MeshFilter>();
@@ -73,17 +74,19 @@ namespace Edanoue.Editor
             ctx.SetMainObject(mainAsset);
         }
 
-        private bool ConstructMesh(IReadOnlyDictionary<string, List<string[]>> data, out Mesh mesh,
+        private bool ConstructMesh(
+            IReadOnlyDictionary<string, List<string[]>> data,
+            out Mesh? mesh,
             out bool triangleSubMeshExists)
         {
-            Mesh result;
             var f = data["f"];
             var e = data["e"];
+            mesh = null;
             triangleSubMeshExists = false;
 
             if (f.Count > 0 && e.Count > 0)
             {
-                result = new Mesh
+                mesh = new Mesh
                 {
                     subMeshCount = 2
                 };
@@ -91,7 +94,7 @@ namespace Edanoue.Editor
             }
             else if (f.Count > 0)
             {
-                result = new Mesh
+                mesh = new Mesh
                 {
                     subMeshCount = 1
                 };
@@ -99,14 +102,13 @@ namespace Edanoue.Editor
             }
             else if (e.Count > 0)
             {
-                result = new Mesh
+                mesh = new Mesh
                 {
                     subMeshCount = 1
                 };
             }
             else
             {
-                mesh = new Mesh();
                 return false;
             }
 
@@ -122,7 +124,7 @@ namespace Edanoue.Editor
                 vertices[i] = new Vector3(x, y, z);
             }
 
-            result.vertices = vertices;
+            mesh.vertices = vertices;
 
             // subMesh 0 is like a regular mesh which uses MeshTopology.Triangles
             if (f.Count > 0)
@@ -157,8 +159,8 @@ namespace Edanoue.Editor
                     triangleIndices[i * 3 + 2] = v3;
                 }
 
-                result.SetIndices(triangleIndices, MeshTopology.Triangles, 0, false);
-                result.RecalculateNormals();
+                mesh.SetIndices(triangleIndices, MeshTopology.Triangles, 0, false);
+                mesh.RecalculateNormals();
             }
 
             // subMesh 1 is the line mesh which uses MeshTopology.Lines
@@ -174,11 +176,10 @@ namespace Edanoue.Editor
                     edgeIndices[i * 2 + 1] = v2;
                 }
 
-                result.SetIndices(edgeIndices, MeshTopology.Lines, triangleSubMeshExists ? 1 : 0, false);
+                mesh.SetIndices(edgeIndices, MeshTopology.Lines, triangleSubMeshExists ? 1 : 0, false);
             }
 
-            result.RecalculateBounds();
-            mesh = result;
+            mesh.RecalculateBounds();
             return true;
         }
 
