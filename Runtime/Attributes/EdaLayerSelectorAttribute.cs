@@ -12,7 +12,7 @@ namespace Edanoue
     /// </summary>
     [AttributeUsage(AttributeTargets.Field)]
     [Conditional("UNITY_EDITOR")]
-    public sealed class EdaLayerAttribute : PropertyAttribute
+    public sealed class EdaLayerSelectorAttribute : PropertyAttribute
     {
         // Do not nothing
     }
