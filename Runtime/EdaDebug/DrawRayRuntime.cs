@@ -35,5 +35,24 @@ namespace Edanoue
                 _drawer!.RegisterLine(start, start + dir, color, duration);
             }
         }
+
+        /// <summary>
+        /// </summary>
+        /// <param name="ray"></param>
+        /// <param name="duration"></param>
+        public static void DrawRayRuntime(in Ray ray, float duration = 0f)
+        {
+            DrawRayRuntime(ray.origin, ray.direction, duration);
+        }
+
+        /// <summary>
+        /// </summary>
+        /// <param name="ray"></param>
+        /// <param name="color">Color of the drawn line.</param>
+        /// <param name="duration">How long the line will be visible for (in seconds). 0 means one frame.</param>
+        public static void DrawRayRuntime(in Ray ray, in Color color, float duration = 0f)
+        {
+            DrawRayRuntime(ray.origin, ray.direction, color, duration);
+        }
     }
 }
