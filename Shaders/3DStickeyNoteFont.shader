@@ -16,13 +16,7 @@ Shader "/Hidden/Edanoue/Developments/GUI/Text Shader" {
         }
         LOD 100
 
-        Fog
-        {
-            Mode Off
-        }
-
         Cull Off
-        Lighting Off
         Blend SrcAlpha OneMinusSrcAlpha
         ZWrite On
         ZTest LEqual

@@ -15,31 +15,33 @@
             "IgnoreProjector" = "True"
             "Queue"="Transparent"
         }
+        
         LOD 100
-
-        Fog
-        {
-            Mode Off
-        }
-
-        Cull Off
-        Lighting Off
-        Blend SrcAlpha OneMinusSrcAlpha
-        ZWrite Off
-        ZTest Always
 
         Pass
         {
             Name "Unlit"
+            Tags
+            {
+                "LightMode" = "UniversalForwardOnly"
+            }
 
+            // Render State
+            ZWrite Off   // ZBuffer に書き込まない
+            ZTest Always // Z を無視して常に描写する
+            Cull Back
+            Blend SrcAlpha OneMinusSrcAlpha
+            
             HLSLPROGRAM
-            #pragma target 2.0
 
             // Pragmas
-            #pragma multi_compile_instancing
+            #pragma target 2.0
             #pragma vertex vert
             #pragma fragment frag
 
+            // GPU Instancing
+            // #pragma multi_compile_instancing
+            
             // Includes
             #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Core.hlsl"
 
@@ -82,15 +84,14 @@
                 return output;
             }
 
-            void frag(
-                Varyings input, out half4 outColor : SV_Target0
-            )
+            void frag(Varyings input, out half4 outColor : SV_Target0)
             {
                 // Outputs
                 half4 finalColor = input.color;
                 finalColor.a *= tex2D(_MainTex, input.uv).a;
                 outColor = finalColor;
             }
+            
             ENDHLSL
         }
     }
