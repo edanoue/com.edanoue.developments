@@ -17,22 +17,15 @@ namespace Edanoue.Developments.Internal
         private readonly DrawLineEntry[] _lineEntries     = new DrawLineEntry[_MAX_LINE_COUNT];
         private          BatchedLineDraw _batchedLineDraw = null!;
         private          bool            _isNeedRebuild;
+        private          RenderParams    _renderParams;
 
         private void Awake()
         {
             // (南) Mesh の new のタイミングの関係上, Awake で初期化する必要があります
             _batchedLineDraw = new BatchedLineDraw();
-        }
 
-        private void LateUpdate()
-        {
-            if (_isNeedRebuild)
-            {
-                RebuildDrawLine();
-                _isNeedRebuild = false;
-            }
-
-            var rParams = new RenderParams(_batchedLineDraw.Mat)
+            // RenderParams を作成 (初回から変わらないので)
+            _renderParams = new RenderParams(_batchedLineDraw.Mat)
             {
                 camera = null,
                 layer = 0,
@@ -43,9 +36,18 @@ namespace Edanoue.Developments.Internal
                 reflectionProbeUsage = ReflectionProbeUsage.Off,
                 shadowCastingMode = ShadowCastingMode.Off
             };
+        }
+
+        private void LateUpdate()
+        {
+            if (_isNeedRebuild)
+            {
+                RebuildDrawLine();
+                _isNeedRebuild = false;
+            }
 
             Graphics.RenderMesh(
-                rParams,
+                _renderParams,
                 _batchedLineDraw.Mesh,
                 0,
                 Matrix4x4.identity
