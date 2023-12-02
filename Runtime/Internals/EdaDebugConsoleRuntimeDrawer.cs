@@ -3,9 +3,9 @@
 #nullable enable
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using UnityEngine;
-using UnityEngine.UI;
 
 namespace Edanoue.Developments.Internal
 {
@@ -15,20 +15,22 @@ namespace Edanoue.Developments.Internal
         [Header("Console Options")]
         [SerializeField]
         [Range(1, 100)]
+        [EdaLabel("Max Line Count")]
         private int m_lineCount = 20;
 
         [Header("Prefab Only")]
         [SerializeField]
-        private Text m_text = null!;
+        private TextMesh m_text = null!;
 
         private readonly StringBuilder _stringBuilder = new();
-        private          bool          _isNeedRebuild;
+        private          bool          _isDirty;
 
         private Queue<string> _textQueue = null!;
 
         private void Awake()
         {
             _textQueue = new Queue<string>(m_lineCount);
+            m_text.text = string.Empty;
         }
 
         private void LateUpdate()
@@ -38,13 +40,18 @@ namespace Edanoue.Developments.Internal
                 return;
             }
 
-            if (!_isNeedRebuild)
+            if (!_isDirty)
             {
                 return;
             }
 
-            _isNeedRebuild = false;
+            _isDirty = false;
+            UpdateText();
+        }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        private void UpdateText()
+        {
             _stringBuilder.Clear();
             foreach (var text in _textQueue.Reverse())
             {
@@ -63,7 +70,7 @@ namespace Edanoue.Developments.Internal
                 _textQueue.Dequeue();
             }
 
-            _isNeedRebuild = true;
+            _isDirty = true;
         }
     }
 }
