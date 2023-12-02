@@ -7,7 +7,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: ed-consola-ignore-depth
+  m_Name: ed-consola (Ignore Depth Always Draw Front)
   m_Shader: {fileID: 4800000, guid: de3f4b3cd8a744adb5bca6c0286576a6, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
